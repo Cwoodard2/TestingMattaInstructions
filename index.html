@@ -28,6 +28,22 @@ const maxPaddleY = canvas.height - grid - paddleHeight;
 
 var paddleSpeed = 6;
 var ballSpeed = 5;
+var leftScore = 0;
+var rightScore = 0;
+
+const leftGoal = {
+  x: 0,
+  y: 0,
+  width: 10,
+  height: canvas.height
+};
+
+const rightGoal = {
+  x: canvas.width - 10,
+  y: 0,
+  width: 10,
+  height: canvas.height
+}
 
 const leftPaddle = {
   // start in the middle of the game on the left side
@@ -39,6 +55,7 @@ const leftPaddle = {
   // paddle velocity
   dy: 0
 };
+
 const rightPaddle = {
   // start in the middle of the game on the right side
   x: canvas.width - grid * 3,
@@ -49,6 +66,7 @@ const rightPaddle = {
   // paddle velocity
   dy: 0
 };
+
 const ball = {
   // start in the middle of the game
   x: canvas.width / 2,
@@ -97,6 +115,12 @@ function loop() {
     rightPaddle.y = maxPaddleY;
   }
 
+  context.font = "30px Arial";
+  context.textAlign = "right";
+  context.fillText(leftScore.toString(), (canvas.width / 2) - 20, 50);
+  context.textAlign = "left";
+  context.fillText(rightScore.toString(), (canvas.width / 2) + 20, 50);
+
   // draw paddles
   context.fillStyle = 'white';
   context.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
@@ -123,6 +147,11 @@ function loop() {
     // give some time for the player to recover before launching the ball again
     setTimeout(() => {
       ball.resetting = false;
+      if (ball.x < 0) {
+        rightScore++;
+      } else if (ball.x > canvas.width) {
+        leftScore++
+      }
       ball.x = canvas.width / 2;
       ball.y = canvas.height / 2;
     }, 400);
@@ -144,6 +173,16 @@ function loop() {
     ball.x = rightPaddle.x - ball.width;
   }
 
+  // if (collides(ball, leftGoal)) {
+  //   rightScore++;
+  //   console.log("right Score" + rightScore);
+  //   console.log(leftScore); 
+  // } else if (collides(ball, rightGoal)){
+  //   leftScore++;
+  //   console.log("right Score" + rightScore);
+  //   console.log(leftScore);
+  // }
+
   // draw ball
   context.fillRect(ball.x, ball.y, ball.width, ball.height);
 
@@ -151,6 +190,8 @@ function loop() {
   context.fillStyle = 'lightgrey';
   context.fillRect(0, 0, canvas.width, grid);
   context.fillRect(0, canvas.height - grid, canvas.width, canvas.height);
+  context.fillRect(0, 0, 10, canvas.height);
+  context.fillRect(canvas.width - 10, 0, 10, canvas.height);
 
   // draw dotted line down the middle
   for (let i = grid; i < canvas.height - grid; i += grid * 2) {
