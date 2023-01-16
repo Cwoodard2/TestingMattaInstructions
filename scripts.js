@@ -73,6 +73,14 @@ function collides(obj1, obj2) {
 function loop() {
   requestAnimationFrame(loop);
   context.clearRect(0,0,canvas.width,canvas.height);
+  if (rightScore >= 7) {
+    context.textAlign = "center";
+    context.fillText("Right Wins!", (canvas.width / 4), canvas.height / 2);
+    context.fillRect(canvas.width / 2, canvas.height / 2, 100, 100);
+  } else if (leftScore >= 7) {
+    context.fillText("Left Wins!", (canvas.width / 4), canvas.height / 2);
+    context.fillRect(canvas.width / 2, (canvas.height / 2) - 20, 100, 100);
+  }
 
   // move paddles by their velocity
   leftPaddle.y += leftPaddle.dy;
