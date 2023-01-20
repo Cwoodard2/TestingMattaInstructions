@@ -31,7 +31,7 @@ const leftPaddle = {
   height: paddleHeight,
 
   // paddle velocity
-  dy: 0
+  dy: 5.5
 };
 
 const rightPaddle = {
@@ -77,20 +77,32 @@ function loop() {
     context.textAlign = "center";
     context.fillText("Right Wins!", (canvas.width / 4), canvas.height / 2);
     context.fillRect(canvas.width / 2, canvas.height / 2, 100, 100);
+    context.fillText("Play Again?", (canvas.width / 4), (canvas.height / 4));
   } else if (leftScore >= 7) {
     context.fillText("Left Wins!", (canvas.width / 4), canvas.height / 2);
     context.fillRect(canvas.width / 2, (canvas.height / 2) - 20, 100, 100);
+    context.fillText("Play Again?", (canvas.width / 4), (canvas.height / 4));
   }
 
   // move paddles by their velocity
-  leftPaddle.y += leftPaddle.dy;
+  if (ball.dx < 0) {
+    if (ball.y > leftPaddle.y) {
+      leftPaddle.y += leftPaddle.dy;
+    } else if(ball.y < leftPaddle.y) {
+      leftPaddle.y += (-leftPaddle.dy);
+    }
+  } else {
+    leftPaddle.y += leftPaddle.dy;
+  }
   rightPaddle.y += rightPaddle.dy;
 
   // prevent paddles from going through walls
   if (leftPaddle.y < grid) {
-    leftPaddle.y = grid;
+    leftPaddle.dy = 5.5;
+    // leftPaddle.y = grid;
   }
   else if (leftPaddle.y > maxPaddleY) {
+    leftPaddle.dy = -5.5;
     leftPaddle.y = maxPaddleY;
   }
 
@@ -197,14 +209,14 @@ document.addEventListener('keydown', function(e) {
     rightPaddle.dy = paddleSpeed;
   }
 
-  // w key
-  if (e.which === 87) {
-    leftPaddle.dy = -paddleSpeed;
-  }
-  // a key
-  else if (e.which === 83) {
-    leftPaddle.dy = paddleSpeed;
-  }
+  // // w key
+  // if (e.which === 87) {
+  //   leftPaddle.dy = -paddleSpeed;
+  // }
+  // // a key
+  // else if (e.which === 83) {
+  //   leftPaddle.dy = paddleSpeed;
+  // }
 });
 
 // listen to keyboard events to stop the paddle if key is released
@@ -213,9 +225,9 @@ document.addEventListener('keyup', function(e) {
     rightPaddle.dy = 0;
   }
 
-  if (e.which === 83 || e.which === 87) {
-    leftPaddle.dy = 0;
-  }
+  // if (e.which === 83 || e.which === 87) {
+  //   leftPaddle.dy = 0;
+  // }
 });
 
 // start the game
