@@ -60,6 +60,11 @@ const ball = {
   dy: -ballSpeed
 };
 
+const resetButton = {
+  x: canvas.width / 4,
+  y: canvas.height / 4,
+}
+
 // check for collision between two objects using axis-aligned bounding box (AABB)
 // @see https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
 function collides(obj1, obj2) {
@@ -68,6 +73,13 @@ function collides(obj1, obj2) {
          obj1.y < obj2.y + obj2.height &&
          obj1.y + obj1.height > obj2.y;
 }
+
+canvas.addEventListener("click", function (e) {
+  // console.log(e.clientX);
+  // if (e.clientX == "341") {
+    // window.location.reload();
+  // }
+})
 
 // game loop
 function loop() {
