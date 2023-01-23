@@ -85,16 +85,15 @@ canvas.addEventListener("click", function (e) {
 function loop() {
   requestAnimationFrame(loop);
   context.clearRect(0,0,canvas.width,canvas.height);
-  if (rightScore >= 7) {
-    context.textAlign = "center";
-    context.fillText("Right Wins!", (canvas.width / 4) + 100, 60);
+  if (leftScore >= 7) {
+    context.fillText("Right Wins!", (canvas.width / 2) + 100, 60);
     context.strokeStyle = "red";
     context.lineWidth = 4;
-    context.strokeRect((canvas.width / 4) + 110, 20, 150, 50);
+    context.strokeRect((canvas.width / 2) + 90, 20, 175, 50);
     context.fillRect((canvas.width / 2) - 100, canvas.height - 100, 200, 100);
     context.fillStyle = "purple";
     context.fillText("Play Again?", (canvas.width / 2) - 75, (canvas.height - 50));
-  } else if (leftScore >= 7) {
+  } else if (rightScore >= 7) {
     context.fillText("Left Wins!", (canvas.width / 4) - 100, 60);
     context.strokeStyle = "green";
     context.lineWidth = 4;
