@@ -87,13 +87,21 @@ function loop() {
   context.clearRect(0,0,canvas.width,canvas.height);
   if (rightScore >= 7) {
     context.textAlign = "center";
-    context.fillText("Right Wins!", (canvas.width / 4), canvas.height / 2);
-    context.fillRect(canvas.width / 2, canvas.height / 2, 100, 100);
-    context.fillText("Play Again?", (canvas.width / 4), (canvas.height / 4));
+    context.fillText("Right Wins!", (canvas.width / 4) + 100, 60);
+    context.strokeStyle = "red";
+    context.lineWidth = 4;
+    context.strokeRect((canvas.width / 4) + 110, 20, 150, 50);
+    context.fillRect((canvas.width / 2) - 100, canvas.height - 100, 200, 100);
+    context.fillStyle = "purple";
+    context.fillText("Play Again?", (canvas.width / 2) - 75, (canvas.height - 50));
   } else if (leftScore >= 7) {
-    context.fillText("Left Wins!", (canvas.width / 4), canvas.height / 2);
-    context.fillRect(canvas.width / 2, (canvas.height / 2) - 20, 100, 100);
-    context.fillText("Play Again?", (canvas.width / 4), (canvas.height / 4));
+    context.fillText("Left Wins!", (canvas.width / 4) - 100, 60);
+    context.strokeStyle = "green";
+    context.lineWidth = 4;
+    context.strokeRect((canvas.width / 4) - 110, 20, 150, 50);
+    context.fillRect((canvas.width / 2) - 100, canvas.height - 100, 200, 100);
+    context.fillStyle = "purple";
+    context.fillText("Play Again?", (canvas.width / 2) - 75, (canvas.height - 50));
   }
 
   // move paddles by their velocity
@@ -127,16 +135,20 @@ function loop() {
 
   context.font = "30px Arial";
   context.textAlign = "right";
+  context.fillStyle = 'green';
   context.fillText(leftScore.toString(), (canvas.width / 2) - 20, 50);
+  context.fillStyle = "red";
   context.textAlign = "left";
   context.fillText(rightScore.toString(), (canvas.width / 2) + 20, 50);
 
   // draw paddles
-  context.fillStyle = 'white';
+  context.fillStyle = 'green';
   context.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+  context.fillStyle = "red";
   context.fillRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
 
   // move ball by its velocity
+  context.fillStyle = "white";
   ball.x += ball.dx;
   ball.y += ball.dy;
 
