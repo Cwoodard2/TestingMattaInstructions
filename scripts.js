@@ -31,7 +31,7 @@ const leftPaddle = {
   height: paddleHeight,
 
   // paddle velocity
-  dy: 0
+  dy: 5.5
 };
 
 const rightPaddle = {
@@ -60,6 +60,11 @@ const ball = {
   dy: -ballSpeed
 };
 
+const resetButton = {
+  x: canvas.width / 4,
+  y: canvas.height / 4,
+}
+
 // check for collision between two objects using axis-aligned bounding box (AABB)
 // @see https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
 function collides(obj1, obj2) {
@@ -69,20 +74,54 @@ function collides(obj1, obj2) {
          obj1.y + obj1.height > obj2.y;
 }
 
+canvas.addEventListener("click", function (e) {
+  // console.log(e.clientX);
+  // if (e.clientX == "341") {
+    // window.location.reload();
+  // }
+})
+
 // game loop
 function loop() {
   requestAnimationFrame(loop);
   context.clearRect(0,0,canvas.width,canvas.height);
+  if (leftScore >= 7) {
+    context.fillText("Right Wins!", (canvas.width / 2) + 100, 60);
+    context.strokeStyle = "red";
+    context.lineWidth = 4;
+    context.strokeRect((canvas.width / 2) + 90, 20, 175, 50);
+    context.fillRect((canvas.width / 2) - 100, canvas.height - 100, 200, 100);
+    context.fillStyle = "purple";
+    context.fillText("Play Again?", (canvas.width / 2) - 75, (canvas.height - 50));
+  } else if (rightScore >= 7) {
+    context.fillText("Left Wins!", (canvas.width / 4) - 100, 60);
+    context.strokeStyle = "green";
+    context.lineWidth = 4;
+    context.strokeRect((canvas.width / 4) - 110, 20, 150, 50);
+    context.fillRect((canvas.width / 2) - 100, canvas.height - 100, 200, 100);
+    context.fillStyle = "purple";
+    context.fillText("Play Again?", (canvas.width / 2) - 75, (canvas.height - 50));
+  }
 
   // move paddles by their velocity
-  leftPaddle.y += leftPaddle.dy;
+  if (ball.dx < 0) {
+    if (ball.y > leftPaddle.y) {
+      leftPaddle.y += leftPaddle.dy;
+    } else if(ball.y < leftPaddle.y) {
+      leftPaddle.y += (-leftPaddle.dy);
+    }
+  } else {
+    leftPaddle.y += leftPaddle.dy;
+  }
   rightPaddle.y += rightPaddle.dy;
 
   // prevent paddles from going through walls
   if (leftPaddle.y < grid) {
-    leftPaddle.y = grid;
+    leftPaddle.dy = 5.5;
+    // leftPaddle.y = grid;
   }
   else if (leftPaddle.y > maxPaddleY) {
+    leftPaddle.dy = -5.5;
     leftPaddle.y = maxPaddleY;
   }
 
@@ -95,16 +134,20 @@ function loop() {
 
   context.font = "30px Arial";
   context.textAlign = "right";
+  context.fillStyle = 'green';
   context.fillText(leftScore.toString(), (canvas.width / 2) - 20, 50);
+  context.fillStyle = "red";
   context.textAlign = "left";
   context.fillText(rightScore.toString(), (canvas.width / 2) + 20, 50);
 
   // draw paddles
-  context.fillStyle = 'white';
+  context.fillStyle = 'green';
   context.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+  context.fillStyle = "red";
   context.fillRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
 
   // move ball by its velocity
+  context.fillStyle = "white";
   ball.x += ball.dx;
   ball.y += ball.dy;
 
@@ -189,14 +232,14 @@ document.addEventListener('keydown', function(e) {
     rightPaddle.dy = paddleSpeed;
   }
 
-  // w key
-  if (e.which === 87) {
-    leftPaddle.dy = -paddleSpeed;
-  }
-  // a key
-  else if (e.which === 83) {
-    leftPaddle.dy = paddleSpeed;
-  }
+  // // w key
+  // if (e.which === 87) {
+  //   leftPaddle.dy = -paddleSpeed;
+  // }
+  // // a key
+  // else if (e.which === 83) {
+  //   leftPaddle.dy = paddleSpeed;
+  // }
 });
 
 // listen to keyboard events to stop the paddle if key is released
@@ -205,9 +248,9 @@ document.addEventListener('keyup', function(e) {
     rightPaddle.dy = 0;
   }
 
-  if (e.which === 83 || e.which === 87) {
-    leftPaddle.dy = 0;
-  }
+  // if (e.which === 83 || e.which === 87) {
+  //   leftPaddle.dy = 0;
+  // }
 });
 
 // start the game
